@@ -1,0 +1,49 @@
+/* Container for both GIFs and the button */
+.assistant-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  /* Container that holds the GIFs */
+  .gif-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+  }
+  
+  /* Base styles for the GIFs */
+  .gif {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    display: none; /* Initially hide both GIFs */
+  }
+  
+  /* Display the 'listening' GIF */
+  .listening {
+    display: block;
+  }
+  
+  /* Hide the 'speaking' GIF by default */
+  .speaking {
+    display: none;
+  }
+  
+  /* Style the button */
+  .action-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  #assistant-response {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+  }
+  
