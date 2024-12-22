@@ -1,110 +1,159 @@
-// Function to toggle between listening and speaking states
-function toggleState() {
-    const listeningGif = document.querySelector('.listening');
-    const speakingGif = document.querySelector('.speaking');
+const speak = document.getElementById('speak');
+const voice = document.getElementById('voice');
+const button = document.getElementById('button');
+const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDrMuxxnZ3l_AlGOZI3uI1IITG0sHxT4ck';
+var gptmsg = null;
+
+window.onload = async () => {
+  speakInBrowser('hello baby, Tum yaha, chalo baat karta haa!');
+  const hasMicPerms = await checkMicPerms();
   
-    // Toggle visibility of the GIFs
-    if (listeningGif.style.display === 'none') {
-      listeningGif.style.display = 'block';
-      speakingGif.style.display = 'none';
-    } else {
-      listeningGif.style.display = 'none';
-      speakingGif.style.display = 'block';
-    }
-  }
-  
-  // Function to start listening to the user's voice using SpeechRecognition
-  function startListening() {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    
-    // Set up recognition parameters
-    recognition.lang = 'en-US';
-    recognition.continuous = false; // Stop after recognizing one sentence
-    
-    // Start listening
-    recognition.start();
-    
-    // When the user starts speaking
-    recognition.onstart = () => {
-      console.log('Listening...');
-      toggleState(); // Show listening GIF
-    };
-    
-    // When the speech is recognized
-    recognition.onresult = async (event) => {
-      const userInput = event.results[0][0].transcript;
-      console.log('User said:', userInput);
+  if (!hasMicPerms) {
+    button.innerText = 'Microphone Permission Needed';
+    button.addEventListener('click', async () => {
       
-      // Show the assistant's response
-      await processResponse(userInput);
-    };
-    
-    // Handle errors
-    recognition.onerror = (event) => {
-      console.error('Speech Recognition Error:', event.error);
-      toggleState(); // Hide listening GIF
-    };
-    
-    // When the speech recognition ends
-    recognition.onend = () => {
-      console.log('Recognition ended');
-      toggleState(); // Hide listening GIF if recognition ends
-    };
-  }
-  
-  // Function to send the recognized message to the Gemini API and get a response
-  async function processResponse(userInput) {
-    const responseContainer = document.getElementById('assistant-response');
-    
-    if (!userInput.trim()) return;
-  
-    // API endpoint and key (replace with your actual API details)
-    const apiUrl = 'https://api.gemini.com/your-endpoint'; // Replace with actual Gemini API endpoint
-  
-    const requestBody = {
-      prompt: userInput,
-      temperature: 0.7, // Optional: adjust creativity of the response
-      max_tokens: 150 // Optional: adjust the length of the response
-    };
-  
-    try {
-      // Send request to Gemini API
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify(requestBody)
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        const assistantResponse = data.choices[0].text.trim();
-        responseContainer.innerText = assistantResponse;
-        
-        // Speak the assistant's response
-        speakResponse(assistantResponse);
-  
-        // Show speaking GIF
-        toggleState();
+      const granted = await requestMicPerms();
+      if (granted) {
+        button.innerText = 'Click and speek';
       } else {
-        throw new Error('Error from Gemini API');
+        button.innerText = 'Access Denied';
       }
-    } catch (error) {
-      console.error('Error:', error);
-      responseContainer.innerText = 'Sorry, I couldn\'t process your request.';
+    });
+  } else {
+    button.innerText = 'Click and Speek';
+  }
+};
+
+document.getElementById('button').addEventListener('click', async () => {
+  
+
+  
+  await checkMicPerms();
+
+  
+
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+
+      recognition.lang = 'en-IN'; 
+      recognition.interimResults = false; 
+      recognition.maxAlternatives = 1; 
+
+      recognition.start(); 
+      console.log('Listening...');
+      speak.style.display = 'block'
+      button.style.display = 'none'
+      // Handle recognition result
+      recognition.onresult = async (event) => {
+          const spokenValue = event.results[0][0].transcript; // Get spoken words
+          console.log('you:', spokenValue);
+
+          const message = spokenValue;
+
+          
+          await gemini(message);
+      };
       
-      // Show speaking GIF
-      toggleState();
+      // Handle recognition errors
+      recognition.onerror = (event) => {
+          console.error('Error occurred in recognition:', event.error);
+          
+      };
+  } else {
+      console.warn('Speech Recognition API not supported in this browser.');
+  }
+});
+
+// Function to check microphone permissions
+async function checkMicPerms() {
+  const micperms = await navigator.permissions.query({ name: 'microphone' });
+
+  try {
+    if (micperms.state === 'granted') {
+      console.log('Microphone access is granted.');
+      return true;
+    } else if (micperms.state === 'denied') {
+      console.log('Microphone access is denied.');
+      speakInBrowser('baby, Tumne mic reject kiya ')
+      return false;
+    } else if (micperms.state === 'prompt') {
+      console.log('Microphone access requires user permission.');
+      speakInBrowser('baby, Mujhe mic de do please! ')
+      return false;
     }
+  } catch (e) {
+    console.log(`Error: ${e}`);
+    return false;
   }
-  
-  // Function to make the assistant speak using SpeechSynthesis API
-  function speakResponse(response) {
-    const speech = new SpeechSynthesisUtterance(response);
-    speech.lang = 'en-US'; // Set language for speech
-    window.speechSynthesis.speak(speech);
+}
+
+
+async function requestMicPerms() {
+  try {
+    const permissionStatus = await navigator.permissions.request({ name: 'microphone' });
+    if (permissionStatus.state === 'granted') {
+      console.log('Microphone permission granted.');
+      return true;
+    } else {
+      console.log('Microphone permission denied.');
+      return false;
+    }
+  } catch (e) {
+    console.error('Error requesting microphone permission:', e);
+    return false;
   }
-  
+}
+
+
+function speakInBrowser(text) {
+ 
+  if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text); 
+      utterance.lang = 'en-IN'; 
+      utterance.rate = 1; 
+      utterance.pitch = 1; 
+
+      utterance.onend = () => {
+         button.style.display = 'block'
+         voice.style.display = 'none'
+      }
+      
+      
+      
+      window.speechSynthesis.speak(utterance);
+
+      console.log('Speaking:', text);
+      
+  } else {
+      console.error('Speech synthesis is not supported in this browser.');
+  }
+}
+
+
+async function gemini(message) {
+  try {
+      const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+              contents: [
+                  {
+                      role: 'user',
+                      parts: [{ text: `system: tum ek girl friend assistent and user aapka boy friend ha or aap bahut toxic and rude ho also use words like babu and babu and more user: ${message}` }]
+                  }
+              ]
+          })
+      });
+
+      const data = await response.json();
+      const apiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || 'Sorry, I could not fetch a response.';
+      console.log('Gemini response:', apiResponse);
+      speakInBrowser(apiResponse);    
+      gptmsg = 'yes';  
+      speak.style.display = 'none'
+      voice.style.display = 'block'
+  } catch (error) {
+      console.error('Error fetching Gemini API response:', error.message);
+  }
+}
