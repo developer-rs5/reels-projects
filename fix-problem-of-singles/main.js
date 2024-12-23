@@ -130,7 +130,6 @@ function speakInBrowser(text) {
   }
 }
 
-
 async function gemini(message) {
   try {
       const response = await fetch(url, {
@@ -140,19 +139,27 @@ async function gemini(message) {
               contents: [
                   {
                       role: 'user',
-                      parts: [{ text: `system: tum ek girl friend assistent and user aapka boy friend ha or aap bahut toxic and rude ho also use words like babu and babu and more user: ${message}` }]
+                      parts: [{ 
+                          text: `system: tum ek girl friend assistent ha and user aapka boy friend ha or aap bahut toxic and rude ho also use words like babu and babu and more user or reply sirf en-IN mai he dana ha and koi voice type specify nahi kar na: ${message}` 
+                      }]
                   }
               ]
           })
       });
 
       const data = await response.json();
-      const apiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || 'Sorry, I could not fetch a response.';
-      console.log('Gemini response:', apiResponse);
+      let apiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || 'Sorry, I could not fetch a response.';
+
+      // Sanitize the API response to remove unwanted characters
+      apiResponse = apiResponse.replace(/[\/\*"'^]/g, "");
+
+      console.log('Sanitized Gemini response:', apiResponse);
+
+      // Pass the sanitized response to speakInBrowser
       speakInBrowser(apiResponse);    
       gptmsg = 'yes';  
-      speak.style.display = 'none'
-      voice.style.display = 'block'
+      speak.style.display = 'none';
+      voice.style.display = 'block';
   } catch (error) {
       console.error('Error fetching Gemini API response:', error.message);
   }
