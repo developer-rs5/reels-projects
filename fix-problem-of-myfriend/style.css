@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.gender-progress-container {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    max-width: 600px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.label.left {
+    color: #3498db;
+}
+
+.label.right {
+    color: #e74c3c;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(to right, #3498db, #9b59b6, #e74c3c);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.center-label {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #9b59b6;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #444;
+}
+
+button.shaky:hover {
+    animation: shake 8s ease infinite;
+}
+
+@keyframes shake {
+    0%{
+        transform: translateX(0);
+    }
+    1%{
+        transform: translateX(-60px);
+    }    
+    25% {
+        transform: translateX(-110px);
+    } 
+    75% {
+        transform: translateY(101px);
+    }
+    100%{
+        transform: translateX(200px);
+    }
+}
