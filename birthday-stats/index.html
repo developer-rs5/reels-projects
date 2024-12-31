@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Tracker for anju</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-box">
+            <h1>Birthday Tracker</h1>
+            <div class="birthday-info">
+                <p><strong>Age:</strong> <span id="age">Calculating...</span></p>
+                <p><strong>Time Until Next Birthday:</strong></p>
+                <div class="flip-container">
+                    <div class="flip-unit">
+                        <div class="flip-top" id="months-left">0</div>
+                        <div class="flip-bottom">Months</div>
+                    </div>
+                    <div class="flip-unit">
+                        <div class="flip-top" id="days-left">0</div>
+                        <div class="flip-bottom">Days</div>
+                    </div>
+                    <div class="flip-unit">
+                        <div class="flip-top" id="hours-left">0</div>
+                        <div class="flip-bottom">Hours</div>
+                    </div>
+                    <div class="flip-unit">
+                        <div class="flip-top" id="minutes-left">0</div>
+                        <div class="flip-bottom">Minutes</div>
+                    </div>
+                    <div class="flip-unit">
+                        <div class="flip-top" id="seconds-left">0</div>
+                        <div class="flip-bottom">Seconds</div>
+                    </div>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

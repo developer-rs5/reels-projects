@@ -1,0 +1,123 @@
+/* Reset margin and padding for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body styling */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;  /* Dark background */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;  /* Full screen height */
+    margin: 0;
+  }
+  
+  /* Main container */
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Main box styling */
+  .main-box {
+    background-color: #1c1c1c;  /* Darker background for the box */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    width: 400px;  /* Fixed width for the box */
+  }
+  
+  /* Headline */
+  h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #fff;
+  }
+  
+  /* Info section */
+  .birthday-info p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+  
+  .flip-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;  /* Added gap between flip boxes */
+    flex-wrap: wrap;  /* Allow wrapping on smaller screens */
+  }
+  
+  .flip-unit {
+    display: inline-block;
+    text-align: center;
+    width: 80px; /* Width for better responsive layout */
+    margin-bottom: 10px;  /* Space between flip units */
+  }
+  
+  .flip-top {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 100%;  /* Ensure full width of the flip box */
+  }
+  
+  .flip-bottom {
+    margin-top: 5px;
+    font-size: 1rem;
+    color: #aaa;
+  }
+  
+  /* Progress bar section */
+  .progress {
+    margin-top: 20px;
+    height: 20px;
+    background-color: #444;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #4caf50;
+    width: 0;  /* Initial width, will be dynamically adjusted */
+    transition: width 0.5s ease-in-out;
+  }
+  
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .main-box {
+      width: 90%;  /* Make the main box take up 90% of the screen width */
+      padding: 20px;
+    }
+  
+    .flip-container {
+      flex-direction: column;  /* Stack the flip boxes vertically */
+      align-items: center;  /* Center flip boxes */
+    }
+  
+    .flip-unit {
+      width: 100%;  /* Make flip units take full width on smaller screens */
+      text-align: center;
+    }
+  
+    h1 {
+      font-size: 1.5rem;  /* Smaller font for the title on mobile */
+    }
+  
+    .birthday-info p {
+      font-size: 1rem;  /* Adjust text size for mobile */
+    }
+  }
+  

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced New Year Countdown</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Welcome to the New Year Countdown</h1>
+      <div class="theme-toggle">
+        <button id="themeToggle">Toggle Theme</button>
+      </div>
+    </header>
+
+    <div id="current-time">
+      <h2>Current Time</h2>
+      <p id="date"></p>
+      <p id="time"></p>
+    </div>
+
+    <div id="countdown">
+      <h2>Time Left to Next Year</h2>
+      <p id="days"></p>
+      <p id="hours"></p>
+      <p id="minutes"></p>
+      <p id="seconds"></p>
+      <p id="progress"></p>
+    </div>
+    <div id="festival-countdown">
+        <h2>Next Festival Countdown</h2>
+        <p id="festival-name"></p>
+        <p id="festival-timer"></p>
+      </div>
+      
+    <div id="custom-countdown">
+      <h2>Set Your Custom Event</h2>
+      <form id="eventForm">
+        <input type="date" id="eventDate" required>
+        <input type="text" id="eventName" placeholder="Event Name" required>
+        <button type="submit">Start Countdown</button>
+      </form>
+      <div id="eventCountdown"></div>
+    </div>
+
+    <div id="extras">
+      <h2>Extras</h2>
+      <div id="weather"></div>
+      <div id="quote"></div>
+      <button id="playMusic">Play Music</button>
+      <button id="stopMusic">Stop Music</button>
+    </div>
+    <div class="down">
+    <div id="notes">
+        <h2>Notes & Reminders</h2>
+        <input type="text" id="note-text" placeholder="Enter note text">
+        <input type="date" id="note-date">
+        <input type="time" id="note-time">
+        <button id="add-note">Add Note</button>
+        <div id="notes-display"></div>
+        <h3>Daily Reminder</h3>
+        <input type="time" id="daily-time">
+        <button id="set-daily">Set Daily Reminder</button>
+        <button id="toggle-daily">Toggle Daily Reminder</button>
+      </div>
+      <div id="footer">
+        Developed by <a href="https://rs.zenuxs.xyz" target="_blank">Rishabh</a>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
