@@ -6,7 +6,7 @@ const minutesLeftEl = document.getElementById("minutes-left");
 const secondsLeftEl = document.getElementById("seconds-left");
 const progressBar = document.querySelector(".progress-bar");
 
-const dob = new Date(2007, 4, 29); // 29 May 2007
+const dob = new Date(2009, 11, 25); // 29 May 2007
 
 function calculateAge() {
     const now = new Date();
