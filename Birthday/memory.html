@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror of Memories</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 192, 203, 0.3), 0 0 40px rgba(255, 192, 203, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(255, 192, 203, 0.5), 0 0 60px rgba(255, 192, 203, 0.3); }
+        }
+        
+        .floating-mirror {
+            animation: float 4s ease-in-out infinite, glow 3s ease-in-out infinite;
+            backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle, #fff, transparent);
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+        
+        @media (min-width: 768px) {
+            .sparkle {
+                width: 4px;
+                height: 4px;
+            }
+        }
+        
+        .heart {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            transform: rotate(-45deg);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @media (min-width: 768px) {
+            .heart {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        
+        .heart::before,
+        .heart::after {
+            content: '';
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            border-radius: 50%;
+        }
+        
+        @media (min-width: 768px) {
+            .heart::before,
+            .heart::after {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        
+        .heart::before {
+            top: -7.5px;
+            left: 0;
+        }
+        
+        .heart::after {
+            top: 0;
+            left: 7.5px;
+        }
+        
+        @media (min-width: 768px) {
+            .heart::before {
+                top: -10px;
+            }
+            
+            .heart::after {
+                left: 10px;
+            }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid rgba(255, 255, 255, 0.8);
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3s steps(40, end), blink-caret 0.8s infinite;
+        }
+        
+        @media (min-width: 768px) {
+            .typewriter {
+                border-right: 3px solid rgba(255, 255, 255, 0.8);
+            }
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: rgba(255, 255, 255, 0.8); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.7s ease-in-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.9); }
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.4);
+        }
+        
+        .next-page-btn {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+        
+        @media (min-width: 768px) {
+            .next-page-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+        
+        .next-page-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.5);
+        }
+        
+        /* Carousel Styles */
+        .carousel-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 100vw;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        @media (min-width: 768px) {
+            .carousel-container {
+                max-width: 1200px;
+            }
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 15px;
+            padding: 0 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .carousel-track {
+                gap: 20px;
+                padding: 0 50px;
+            }
+        }
+        
+        .carousel-item {
+            flex: 0 0 250px;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        @media (min-width: 768px) {
+            .carousel-item {
+                flex: 0 0 300px;
+                height: 400px;
+                border-radius: 20px;
+            }
+        }
+        
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.6s ease;
+        }
+        
+        .carousel-item:not(.active) {
+            opacity: 0.4;
+            transform: scale(0.85);
+            filter: blur(1px);
+        }
+        
+        @media (min-width: 768px) {
+            .carousel-item:not(.active) {
+                opacity: 0.3;
+                filter: blur(2px);
+            }
+        }
+        
+        .carousel-item.active {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+        }
+        
+        @media (min-width: 768px) {
+            .carousel-item.active {
+                box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            }
+        }
+        
+        .carousel-item.active::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.1), rgba(255, 20, 147, 0.1));
+            border-radius: 15px;
+            z-index: 1;
+        }
+        
+        @media (min-width: 768px) {
+            .carousel-item.active::before {
+                border-radius: 20px;
+            }
+        }
+        
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 15px;
+            text-align: center;
+            z-index: 2;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        @media (min-width: 768px) {
+            .carousel-caption {
+                padding: 20px;
+            }
+        }
+        
+        .carousel-item.active .carousel-caption {
+            transform: translateY(0);
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(50px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff69b4;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (min-width: 768px) {
+            .nav-arrow {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+        
+        .nav-arrow:hover {
+            background: rgba(255, 105, 180, 0.2);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .nav-arrow.left {
+            left: 10px;
+        }
+        
+        .nav-arrow.right {
+            right: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .nav-arrow.left {
+                left: 20px;
+            }
+            
+            .nav-arrow.right {
+                right: 20px;
+            }
+        }
+        
+        /* Touch-friendly improvements */
+        @media (max-width: 767px) {
+            .carousel-item {
+                touch-action: manipulation;
+            }
+            
+            .typewriter {
+                white-space: normal;
+                word-wrap: break-word;
+                line-height: 1.4;
+            }
+        }
+        
+        /* Prevent text selection on mobile */
+        .carousel-item, .floating-mirror, .download-btn, .next-page-btn {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Improve touch targets */
+        .carousel-item, .floating-mirror, .download-btn, .next-page-btn, .nav-arrow {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 overflow-hidden relative">
+    <!-- Background Elements -->
+    <div class="absolute inset-0 pointer-events-none">
+        <!-- Floating Hearts -->
+        <div class="heart" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="heart" style="top: 20%; right: 15%; animation-delay: 1s;"></div>
+        <div class="heart" style="bottom: 30%; left: 20%; animation-delay: 2s;"></div>
+        <div class="heart" style="bottom: 10%; right: 25%; animation-delay: 3s;"></div>
+        
+        <!-- Sparkles -->
+        <div class="sparkle" style="top: 25%; left: 30%; animation-delay: 0.5s;"></div>
+        <div class="sparkle" style="top: 70%; left: 80%; animation-delay: 1.5s;"></div>
+        <div class="sparkle" style="top: 40%; right: 40%; animation-delay: 2.5s;"></div>
+        <div class="sparkle" style="bottom: 60%; left: 70%; animation-delay: 3.5s;"></div>
+        <div class="sparkle" style="top: 80%; right: 20%; animation-delay: 4s;"></div>
+        <div class="sparkle" style="top: 15%; right: 60%; animation-delay: 4.5s;"></div>
+    </div>
+    
+    <!-- Audio Element -->
+    <audio id="bgMusic" loop>
+        <source src="bg-soft.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Main Content -->
+    <div class="flex flex-col items-center justify-center min-h-screen p-4 md:p-8">
+        <!-- Title -->
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 mb-6 md:mb-8 text-center px-4">
+            Mirror of Memories
+        </h1>
+        
+        <!-- Initial Mirror Frame -->
+        <div id="initialMirror" class="floating-mirror rounded-2xl md:rounded-3xl p-4 md:p-8 cursor-pointer hover:scale-105 transition-transform duration-300" 
+             onclick="unlockMemories()">
+            <div class="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 relative overflow-hidden rounded-xl md:rounded-2xl bg-gradient-to-br from-pink-200 to-purple-200 flex items-center justify-center">
+                <div class="text-center text-gray-600">
+                    <div class="text-4xl sm:text-5xl md:text-6xl mb-4">💕</div>
+                    <p class="text-base sm:text-lg font-semibold px-4">Click to unlock memories</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Carousel Container -->
+        <div id="carouselContainer" class="carousel-container hidden relative">
+            <!-- Left Arrow -->
+            <button id="arrowLeft" class="nav-arrow left" style="display:none;">
+                ←
+            </button>
+            <!-- Right Arrow -->
+            <button id="arrowRight" class="nav-arrow right" style="display:none;">
+                →
+            </button>
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Images will be populated here -->
+            </div>
+        </div>
+        
+        <!-- Typewriter Text -->
+        <div class="mt-6 md:mt-8 h-16 md:h-20 flex items-center justify-center px-4">
+            
+        </div>
+        
+        <!-- Download Button -->
+        <button id="downloadBtn" class="download-btn text-white px-6 md:px-8 py-2 md:py-3 rounded-full font-semibold text-base md:text-lg mt-4 md:mt-6 hidden shadow-lg">
+            💝 Download this memory
+        </button>
+        
+        <!-- Music Control -->
+        <button id="musicBtn" class="fixed top-4 right-4 bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-2 md:p-3 hover:bg-opacity-30 transition-all duration-300 z-40">
+            <span id="musicIcon" class="text-lg md:text-xl">🎵</span>
+        </button>
+        
+        <!-- Next Page Button -->
+        <button class="next-page-btn text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold text-sm md:text-base shadow-lg">
+            Next Page ➡️
+        </button>
+    </div>
+    
+    <script>
+        // Next page navigation
+        document.querySelector('.next-page-btn').addEventListener('click', function() {
+            document.body.classList.add('fade-out');
+            setTimeout(function() {
+                window.location.href = "cake.html"; // Change to your next page
+            }, 700);
+        });
+        
+        // Photos and captions data
+        const memories = [
+            { photo: 'pic1.jpg', caption: 'This smile… my forever favorite' },
+            { photo: 'pic2.jpg', caption: 'That moment… when time stood still' },
+            { photo: 'pic3.jpg', caption: 'You, always you…' },
+            { photo: 'pic4.jpg', caption: 'Our love story continues…' },
+            { photo: 'pic5.jpg', caption: 'Forever and always, my heart' }
+        ];
+        
+        let currentPhotoIndex = 0;
+        let memoriesUnlocked = false;
+        
+        // Elements
+        const initialMirror = document.getElementById('initialMirror');
+        const carouselContainer = document.getElementById('carouselContainer');
+        const carouselTrack = document.getElementById('carouselTrack');
+        const typewriterText = document.getElementById('typewriterText');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        const musicIcon = document.getElementById('musicIcon');
+        const arrowLeft = document.getElementById('arrowLeft');
+        const arrowRight = document.getElementById('arrowRight');
+        
+        // Unlock memories and show carousel
+        function unlockMemories() {
+            if (!memoriesUnlocked) {
+                memoriesUnlocked = true;
+
+                // Hide initial mirror
+                initialMirror.style.opacity = '0';
+                initialMirror.style.transform = 'scale(0.8)';
+
+                setTimeout(() => {
+                    initialMirror.classList.add('hidden');
+
+                    // Show carousel
+                    carouselContainer.classList.remove('hidden');
+                    carouselContainer.classList.add('slide-in');
+
+                    // Show arrow buttons
+                    arrowLeft.style.display = 'flex';
+                    arrowRight.style.display = 'flex';
+
+                    // Create carousel items
+                    createCarousel();
+
+                    // Show download button
+                    downloadBtn.classList.remove('hidden');
+
+                    // Start background music
+                    bgMusic.play().catch(e => console.log('Audio autoplay blocked'));
+
+                    // Show initial caption
+                    showTypewriter(memories[currentPhotoIndex].caption);
+                }, 500);
+            }
+        }
+        
+        // Arrow navigation
+        arrowLeft.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (memoriesUnlocked && currentPhotoIndex > 0) {
+                selectPhoto(currentPhotoIndex - 1);
+            }
+        });
+        
+        arrowRight.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (memoriesUnlocked && currentPhotoIndex < memories.length - 1) {
+                selectPhoto(currentPhotoIndex + 1);
+            }
+        });
+        
+        // Create carousel items
+        function createCarousel() {
+            carouselTrack.innerHTML = '';
+            
+            memories.forEach((memory, index) => {
+                const item = document.createElement('div');
+                item.className = `carousel-item ${index === currentPhotoIndex ? 'active' : ''}`;
+                item.onclick = () => selectPhoto(index);
+                
+                item.innerHTML = `
+                    <img src="${memory.photo}" alt="Memory ${index + 1}" loading="lazy">
+                    <div class="carousel-caption">
+                        <p class="text-xs sm:text-sm font-medium">${memory.caption}</p>
+                    </div>
+                `;
+                
+                carouselTrack.appendChild(item);
+            });
+            
+            updateCarouselPosition();
+        }
+        
+        // Select photo and move carousel
+        function selectPhoto(index) {
+            if (index !== currentPhotoIndex) {
+                currentPhotoIndex = index;
+                
+                // Update active state
+                const items = document.querySelectorAll('.carousel-item');
+                items.forEach((item, i) => {
+                    item.classList.toggle('active', i === index);
+                });
+                
+                // Update carousel position
+                updateCarouselPosition();
+                
+                // Show typewriter effect
+                showTypewriter(memories[currentPhotoIndex].caption);
+            }
+        }
+        
+        // Update carousel position to center active item
+        function updateCarouselPosition() {
+            const track = carouselTrack;
+            const isMobile = window.innerWidth < 768;
+            const itemWidth = isMobile ? 265 : 320; // 250px/300px + 15px/20px gap
+            const containerWidth = carouselContainer.offsetWidth;
+            const offset = (containerWidth / 2) - (itemWidth / 2) - (currentPhotoIndex * itemWidth);
+            
+            track.style.transform = `translateX(${offset}px)`;
+        }
+        
+        // Typewriter effect
+        function showTypewriter(text) {
+            typewriterText.textContent = '';
+            typewriterText.classList.remove('typewriter');
+            
+            setTimeout(() => {
+                typewriterText.textContent = text;
+                typewriterText.classList.add('typewriter');
+            }, 100);
+        }
+        
+        // Download current photo
+        downloadBtn.addEventListener('click', () => {
+            if (memoriesUnlocked) {
+                const link = document.createElement('a');
+                link.href = memories[currentPhotoIndex].photo;
+                link.download = `memory-${currentPhotoIndex + 1}.jpg`;
+                link.click();
+            }
+        });
+        
+        // Music control
+        musicBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicIcon.textContent = '🎵';
+            } else {
+                bgMusic.pause();
+                musicIcon.textContent = '🔇';
+            }
+        });
+        
+        // Keyboard navigation (for desktop)
+        document.addEventListener('keydown', (e) => {
+            if (memoriesUnlocked) {
+                if (e.key === 'ArrowLeft' && currentPhotoIndex > 0) {
+                    selectPhoto(currentPhotoIndex - 1);
+                } else if (e.key === 'ArrowRight' && currentPhotoIndex < memories.length - 1) {
+                    selectPhoto(currentPhotoIndex + 1);
+                }
+            }
+        });
+        
+        // Touch/swipe support for mobile
+        let startX = 0;
+        let endX = 0;
+        
+        carouselContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+        
+        carouselContainer.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const deltaX = startX - endX;
+            
+            if (Math.abs(deltaX) > swipeThreshold && memoriesUnlocked) {
+                if (deltaX > 0 && currentPhotoIndex < memories.length - 1) {
+                    // Swipe left - next photo
+                    selectPhoto(currentPhotoIndex + 1);
+                } else if (deltaX < 0 && currentPhotoIndex > 0) {
+                    // Swipe right - previous photo
+                    selectPhoto(currentPhotoIndex - 1);
+                }
+            }
+        }
+        
+        // Responsive carousel position update
+        window.addEventListener('resize', () => {
+            if (memoriesUnlocked) {
+                updateCarouselPosition();
+            }
+        });
+        
+        // Create more sparkles dynamically
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+        
+        // Generate sparkles periodically
+        setInterval(createSparkle, 3000);
+        
+        // Prevent zoom on double tap for iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
